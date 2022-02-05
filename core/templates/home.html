@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Youtube Downloader</title>
+    <link href="{% static 'css/bootstrap.css' %}?v=100" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center py-4">Download Youtube Video & Audio</h2>
+            <form class="row gy-2 gx-3 align-items-center" method="get" action="">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <label class="visually-hidden" for="inlineFormInputGroupUrl">Youtube URL</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="inlineFormInputGroupUrl"
+                               placeholder="Youtube URL" name="youtube_url" value="{% if url %}{{ url }}{% endif %}">
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+
+            </form>
+            {% if result %}
+                <div class="py-4">
+                    <h3>Result:</h3>
+                    <h2>{{ result.title }}</h2>
+                    <div class="row pt-3">
+                        <div class="col-md-4">
+                            <img src="{{ result.thumbnail }}" class="img-fluid" alt="{{ result.title }}">
+                        </div>
+                        <div class="col-md-8">
+                            <p>
+                                Uploader: <a href="{{ result.uploader_url }}">{{ result.uploader }}</a><br>
+                                Uploaded Date: {{ result.upload_date }}
+                            </p>
+                            <p>Channel: <a href="{{ result.channel_url }}">{{ result.channel }}</a></p>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="py-4">
+                                <h2>Best Formats:</h2>
+                                {% for frmt in audio_video_formats %}
+                                    <p>
+                                        {% if frmt.height and frmt.width %}
+                                            ({{ frmt.width }}x{{ frmt.height }})
+                                        {% endif %}
+                                        {{ frmt.ext }}
+                                        - {{ frmt.h_size }}
+                                        <a href="{{ frmt.url }}">Download</a>
+                                    </p>
+                                {% endfor %}
+                            </div>
+                            <div class="py-4">
+                                <h2>Only Video Formats:</h2>
+                                {% for frmt in video_formats %}
+                                    <p>
+                                        {% if frmt.height and frmt.width %}
+                                            ({{ frmt.width }}x{{ frmt.height }})
+                                        {% endif %}
+                                        {{ frmt.ext }}
+                                        - {{ frmt.h_size }}
+                                        <a href="{{ frmt.url }}">Download</a>
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="py-4">
+                                <h2>Only Audio Formats:</h2>
+                                {% for frmt in audio_formats %}
+                                    <p>
+                                        {{ frmt.abr }} kbps - {{ frmt.ext }}
+                                        - {{ frmt.h_size }}
+                                        <a href="{{ frmt.url }}">Download</a>
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<script type="application/javascript" src="{% static 'js/bootstrap.bundle.js' %}?v=100"></script>
+</body>
+</html>
