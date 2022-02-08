@@ -7,6 +7,8 @@ import youtube_dl
 from core.constants import itag_to_format
 
 def convert_bytes(size):
+    if not size:
+        return 0
     for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
         if size < 1024.0:
             return "%3.1f %s" % (size, x)
